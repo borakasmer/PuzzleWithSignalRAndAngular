@@ -1,0 +1,10 @@
+/Users/borakasmer/Projects/Puzzle/puzzleservice/bin/Debug/netcoreapp2.0/puzzleservice.deps.json
+/Users/borakasmer/Projects/Puzzle/puzzleservice/bin/Debug/netcoreapp2.0/puzzleservice.runtimeconfig.json
+/Users/borakasmer/Projects/Puzzle/puzzleservice/bin/Debug/netcoreapp2.0/puzzleservice.runtimeconfig.dev.json
+/Users/borakasmer/Projects/Puzzle/puzzleservice/bin/Debug/netcoreapp2.0/puzzleservice.dll
+/Users/borakasmer/Projects/Puzzle/puzzleservice/bin/Debug/netcoreapp2.0/puzzleservice.pdb
+/Users/borakasmer/Projects/Puzzle/puzzleservice/obj/Debug/netcoreapp2.0/puzzleservice.csproj.CoreCompileInputs.cache
+/Users/borakasmer/Projects/Puzzle/puzzleservice/obj/Debug/netcoreapp2.0/puzzleservice.AssemblyInfoInputs.cache
+/Users/borakasmer/Projects/Puzzle/puzzleservice/obj/Debug/netcoreapp2.0/puzzleservice.AssemblyInfo.cs
+/Users/borakasmer/Projects/Puzzle/puzzleservice/obj/Debug/netcoreapp2.0/puzzleservice.dll
+/Users/borakasmer/Projects/Puzzle/puzzleservice/obj/Debug/netcoreapp2.0/puzzleservice.pdb
