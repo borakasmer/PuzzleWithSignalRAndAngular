@@ -7,8 +7,9 @@ import 'rxjs/add/operator/catch';
 @Injectable()
 export class PuzzleService {
     constructor(private http: Http) { }
-    public GetAllCards(){
-        return this.http.get("http://localhost:5000/api/Puzzles/1")
+    public GetAllCards() {
+        /* return this.http.get("http://localhost:5000/api/Puzzles/1") */
+        return this.http.get("http://192.168.1.234:5000/api/Puzzles/1")
         .map(result => result.json());
     }
 }

@@ -1,1 +1,15 @@
-<h1>Test Control Page</h1>
+<div class="body" backImage="{{ bgImage }}">
+    <table class="box" *ngIf="cardList!=null">
+        <tr *ngFor="let card of cardList | pairs">
+            <td>
+                <img src="{{cardBgImage}}" alt='cardBack' class='cardBack'>
+            </td>
+            <td>
+                <img src="{{cardBgImage}}" alt='cardBack' class='cardBack'>
+            </td>
+            <td>
+                <img src="{{cardBgImage}}" alt='cardBack' class='cardBack'>
+            </td>
+        </tr>
+    </table>
+</div>
