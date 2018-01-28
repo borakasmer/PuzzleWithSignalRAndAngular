@@ -1,7 +1,7 @@
 import {Directive, ElementRef, Input} from '@angular/core';
  
 @Directive({
-    selector: '[background-image]'
+    selector: '[backImage]'
 })
 export class BackgroundImage {
     private el: HTMLElement;
@@ -9,8 +9,12 @@ export class BackgroundImage {
     constructor(el: ElementRef) {
         this.el = el.nativeElement;
     }
-
-    @Input('background-image') backgroundImage: string;
+    
+    private backgroundImage: string;
+    @Input()
+    set backImage(backImage:string) {this.backgroundImage=backImage; this.ngAfterViewInit()};
+    get backImage(){return this.backgroundImage;}
+    
 
     ngAfterViewInit() {
         this.el.style.backgroundImage = 'url(' + this.backgroundImage + ')';

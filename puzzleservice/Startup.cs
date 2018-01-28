@@ -39,7 +39,7 @@ namespace puzzleservice
                   {
                       builder.AllowAnyHeader();
                       builder.AllowAnyMethod();
-                      builder.AllowAnyOrigin();
+                      builder.AllowAnyOrigin();                      
                   });
 
             app.UseMvc();

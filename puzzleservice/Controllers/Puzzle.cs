@@ -31,4 +31,9 @@ public class Puzzle : Hub
         {            
             File.Delete("wwwroot/images/"+ imgName + ".png");
         }
+
+        public Task TriggerMainPage(string connectionID)
+        {
+             return Clients.Client(connectionID).InvokeAsync("Connected",connectionID);
+        }
     }

@@ -1,0 +1,10 @@
+
+.box {
+    width:1000px;
+    height:750px;
+    position:fixed;
+    margin-left:-500px; /* half of width */
+    margin-top:-375px;  /* half of height */
+    top:50%;
+    left:50%;
+}
