@@ -20,7 +20,7 @@ export class ControlPageComponent implements OnInit {
             console.log(this.connectionID);
         });
 
-        this._hubConnection = new HubConnection("http://192.168.1.234:5000/puzzle");
+        this._hubConnection = new HubConnection("http://192.168.1.234:5000/puzzle?key=control");
         
         this._hubConnection
             .start()

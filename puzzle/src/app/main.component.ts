@@ -26,7 +26,7 @@ export class MainComponent implements OnInit {
   constructor(private service: PuzzleService) { }
 
   public ngOnInit() {
-    this._hubConnection = new HubConnection("http://localhost:5000/puzzle");
+    this._hubConnection = new HubConnection("http://localhost:5000/puzzle?key=main");
 
     this._hubConnection
       .start()
