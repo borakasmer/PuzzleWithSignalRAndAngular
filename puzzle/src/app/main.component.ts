@@ -22,7 +22,7 @@ export class MainComponent implements OnInit {
   height: number = 400;
   width: number = 400;
   IsLogin: boolean = false;
-
+  _connectionId:string;
   constructor(private service: PuzzleService) { }
 
   public ngOnInit() {
@@ -37,13 +37,15 @@ export class MainComponent implements OnInit {
       this.barcodeImageUrl = barcode;
       this.barcodeImageName = imageName;
 
+      this._connectionId=connectionId;
       console.log("Barcode Image :" + barcode);
       console.log("ConnectionID :" + connectionId);
     });
 
     this._hubConnection.on('Connected', (data: string) => {
       //Get Cards
-      this.service.GetAllCards().subscribe(result => {
+      this.service.GetAllCards(this._connectionId).subscribe(result => {
+        console.log(JSON.stringify(result));
         this.cardList = result
         this.IsLogin = true;
         this.bgImage = "/assets/images/frozen/back2.jpg"
@@ -56,6 +58,7 @@ export class MainComponent implements OnInit {
     });
 
   }
+  //Barcode'un yüklenmesi bitmeden sürekli cmd+R yapılır ise resimler silinmeden kalır.
   DeleteImage() {
     this._hubConnection.invoke("DeleteImage", this.barcodeImageName)
       .then(result => {

@@ -11,7 +11,7 @@ import { PuzzleService } from '../Services/Indexservice';
 })
 
 export class ControlPageComponent implements OnInit {
-    connectionID: number
+    connectionID: string
     private _hubConnection: HubConnection;
 
     cardList: Array<FrozenPuzzle>
@@ -32,21 +32,21 @@ export class ControlPageComponent implements OnInit {
             .start()
             .then(() => {
                 console.log("Hub_Connection Start!");
-                this._hubConnection.invoke("TriggerMainPage", this.connectionID)
-                    .then(result => {
-                        console.log("MainPage Triggered");
-                        //Get Cards
-                        this.service.GetAllCards().subscribe(result => {
-                            this.cardList = result
-                        },
-                            err => console.log(err),
-                            () => {
-                                console.log("Card List Loaded");
-                            }
-                        )
-
-                    });
-
+                //Eğer önce kartları çekmez isek Dictionary Liste'e Lock koymak lazım. Aynı key 2 kere yazılmaya çalışılıyor.
+                //Get Cards 
+                this.service.GetAllCards(this.connectionID).subscribe(result => {
+                    console.log(JSON.stringify(result));
+                    this.cardList = result
+                },
+                    err => console.log(err),
+                    () => {
+                        console.log("Card List Loaded");
+                        this._hubConnection.invoke("TriggerMainPage", this.connectionID)
+                            .then(result => {
+                                console.log("MainPage Triggered");
+                            });
+                    }
+                )
             })
             .catch(err => console.log('Error while establishing connection :('));
     }
