@@ -1,3 +1,6 @@
+using System;
+
+[Serializable]
 public class FrozenPuzzle : Ipuzzle
 {
     public int ID { get; set; }

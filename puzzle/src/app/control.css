@@ -1,10 +1,20 @@
 
-.box {
+ .box {
     width:450px;
     height:300px;
     position:fixed;
     margin-left:-210px; /* half of width */
-    margin-top:-150px;  /* half of height */
-    top:30%;
+    margin-top:-150px; /* half of height */
+    top:25%;
+    left:51%;
+} 
+
+/* .box {
+    width:300px;
+    height:540px;
+    position:fixed;
+    margin-left:-150px; 
+    margin-top:-300px;  
+    top:50%;
     left:50%;
-}
+} */

@@ -60,6 +60,7 @@ export class ControlPageComponent implements OnInit {
         var card = this.cardList.filter(card => card.id == id)[0];
         card.isShow = true;
         card.controlCardBgImage = this.cardBgDisabledImage;
+        
     }
     public GroupTable(array, count: number) {
         //3'lü kolonlar halinde sıralama

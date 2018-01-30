@@ -4,7 +4,7 @@
         <tr *ngFor="let cards of cardList | pairs">
             <!-- <td *ngFor="let card of cardRow"> -->
             <td *ngFor="let card of cards">
-                <img [src]="card.controlCardBgImage" alt="{{card.name}}" [attr.isShow]="card.isShow" name="{{card.name}}" id="{{card.id}}" class='cardBack' (click)="OpenCard(card.id)">
+                <img [src]="card.controlCardBgImage" alt="{{card.name}}" [attr.isShow]="card.isShow" name="{{card.name}}" id="{{card.id}}" class='cardBack' (click)="OpenCard(card.id)" width="98px" height="135px">
             </td>           
         </tr>
     </table>

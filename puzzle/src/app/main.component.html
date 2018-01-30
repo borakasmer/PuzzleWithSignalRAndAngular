@@ -11,7 +11,7 @@
       <tr *ngFor="let cards of cardList | pairs">
         <!-- <td *ngFor="let card of cardRow"> -->
         <td *ngFor="let card of cards">
-          <img src="{{cardBgImage}}" alt="{{card.name}}" name="{{card.name}}" class='cardBack' *ngIf="!card.IsShow">
+          <img src="{{cardBgImage}}" alt="{{card.name}}" name="{{card.name}}" class='cardBack' *ngIf="!card.IsShow" width="325" height="239">
           <img src="{{bgPath}}/{{card.Name}}" alt="{{card.name}}" name="{{card.name}}" class='card' *ngIf="card.IsShow">
         </td>        
       </tr>
