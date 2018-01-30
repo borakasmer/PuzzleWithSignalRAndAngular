@@ -1,24 +1,20 @@
-
 <!--The content below is only a placeholder and can be replaced.-->
 <div class="body" backImage="{{ bgImage }}">
-    <div *ngIf="!IsLogin">
-      <p style="position: absolute;top:30%;left:25%; width: 200px; height: 200px; margin-left: -65px; margin-top: -50px">
-        <img src="{{barcodeImageUrl}}" width="{{width}}" height=" {{height}}" alt='QrBarcode' class='barcode' (load)="DeleteImage()">
-      </p>
-    </div>
-    <div *ngIf="IsLogin">
-        <table class="box">
-          <tr *ngFor="let card of cardList | pairs">
-            <td>
-                <img src="{{cardBgImage}}" alt='cardBack' class='cardBack'>
-            </td>
-            <td>
-                <img src="{{cardBgImage}}" alt='cardBack' class='cardBack'>
-            </td>
-            <td>
-                <img src="{{cardBgImage}}" alt='cardBack' class='cardBack'>
-            </td>
-          </tr>
-        </table>
-    </div>
+  <div *ngIf="!IsLogin">
+    <p style="position: absolute;top:30%;left:25%; width: 200px; height: 200px; margin-left: -65px; margin-top: -50px">
+      <img src="{{barcodeImageUrl}}" width="{{width}}" height=" {{height}}" alt='QrBarcode' class='barcode' (load)="DeleteImage()">
+    </p>
   </div>
+  <div *ngIf="IsLogin">
+    <table class="box">
+      <!-- <tr *ngFor="let cardRow of cardList">  -->
+      <tr *ngFor="let cards of cardList | pairs">
+        <!-- <td *ngFor="let card of cardRow"> -->
+        <td *ngFor="let card of cards">
+          <img src="{{cardBgImage}}" alt="{{card.name}}" name="{{card.name}}" class='cardBack' *ngIf="!card.IsShow">
+          <img src="{{bgPath}}/{{card.Name}}" alt="{{card.name}}" name="{{card.name}}" class='card' *ngIf="card.IsShow">
+        </td>        
+      </tr>
+    </table>
+  </div>
+</div>

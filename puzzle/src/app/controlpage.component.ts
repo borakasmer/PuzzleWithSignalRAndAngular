@@ -17,6 +17,7 @@ export class ControlPageComponent implements OnInit {
     cardList: Array<FrozenPuzzle>
     bgImage: string = "/assets/images/frozen/controlback.jpg"
     cardBgImage: string = "/assets/images/frozen/controlCardback.png?ver=1.09";
+    cardBgDisabledImage: string = "/assets/images/frozen/controlDisabledCardback.png";
 
     constructor(private route: ActivatedRoute, private service: PuzzleService) { }
 
@@ -35,8 +36,11 @@ export class ControlPageComponent implements OnInit {
                 //Eğer önce kartları çekmez isek Dictionary Liste'e Lock koymak lazım. Aynı key 2 kere yazılmaya çalışılıyor.
                 //Get Cards 
                 this.service.GetAllCards(this.connectionID).subscribe(result => {
-                    console.log(JSON.stringify(result));
-                    this.cardList = result
+                    var data=result.forEach(card => {
+                        card.controlCardBgImage = this.cardBgImage;
+                    });
+                    console.log(JSON.stringify(data));
+                    this.cardList = result //this.GroupTable(result, 3);
                 },
                     err => console.log(err),
                     () => {
@@ -49,5 +53,30 @@ export class ControlPageComponent implements OnInit {
                 )
             })
             .catch(err => console.log('Error while establishing connection :('));
+    }
+    OpenCard(id) {
+        console.log("Card Opening: " + id);
+        /* console.log(this.cardList.filter(card=>card.id==id)); */
+        var card = this.cardList.filter(card => card.id == id)[0];
+        card.isShow = true;
+        card.controlCardBgImage = this.cardBgDisabledImage;
+    }
+    public GroupTable(array, count: number) {
+        //3'lü kolonlar halinde sıralama
+        var Pair3list = [];
+        var dataSet = []
+        for (let card of array) {
+            dataSet.push(card);
+            if (dataSet.length % count == 0) {
+                Pair3list.push(dataSet);
+                dataSet = [];
+            }
+        }
+        if (dataSet.length > 0) {
+            Pair3list.push(dataSet);
+            dataSet = [];
+        }
+        //--------------------------------
+        return Pair3list;
     }
 }

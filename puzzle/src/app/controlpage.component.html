@@ -1,15 +1,11 @@
 <div class="body" backImage="{{ bgImage }}">
     <table class="box" *ngIf="cardList!=null">
-        <tr *ngFor="let card of cardList | pairs">
-            <td>
-                <img src="{{cardBgImage}}" alt='cardBack' class='cardBack'>
-            </td>
-            <td>
-                <img src="{{cardBgImage}}" alt='cardBack' class='cardBack'>
-            </td>
-            <td>
-                <img src="{{cardBgImage}}" alt='cardBack' class='cardBack'>
-            </td>
+        <!-- <tr *ngFor="let cardRow of cardList"> -->
+        <tr *ngFor="let cards of cardList | pairs">
+            <!-- <td *ngFor="let card of cardRow"> -->
+            <td *ngFor="let card of cards">
+                <img [src]="card.controlCardBgImage" alt="{{card.name}}" [attr.isShow]="card.isShow" name="{{card.name}}" id="{{card.id}}" class='cardBack' (click)="OpenCard(card.id)">
+            </td>           
         </tr>
     </table>
 </div>
