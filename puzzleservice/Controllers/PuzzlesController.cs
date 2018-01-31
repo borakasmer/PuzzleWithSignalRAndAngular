@@ -50,8 +50,16 @@ namespace puzzleservice.Controllers
         }
         public int CloneID(int ID)
         {
-            return int.Parse(ID.ToString() + "0" + ID.ToString());
+            if (ID < 100)
+            {
+                return int.Parse(ID.ToString() + "0" + ID.ToString());
+            }
+            else
+            {
+                return int.Parse(ID.ToString().Split('0')[0]);
+            }
         }
+        
         //Eşlenik resimler yeni referans değerleri ile oluşurlar.
         public static List<T> CloneList<T>(List<T> oldList)
         {
