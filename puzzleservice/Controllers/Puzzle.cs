@@ -16,12 +16,16 @@ public class Puzzle : Hub
         //if (IsMain)
         if(FromPage=="main")
         {
+            //Main Page
             Guid imgName = Guid.NewGuid();
             var barcode = CreateBarcode(Context.ConnectionId, imgName);
             return Clients.Client(Context.ConnectionId).InvokeAsync("GetConnectionId", barcode, Context.ConnectionId, imgName);
         }
         else
-            return Task.FromResult<object>(null);
+        {
+            //Control Page
+            return Clients.Client(Context.ConnectionId).InvokeAsync("GetConnectionId",Context.ConnectionId);
+        }            
     }
 
     public string CreateBarcode(string connectionID, Guid imgName)
@@ -43,8 +47,13 @@ public class Puzzle : Hub
         File.Delete("wwwroot/images/" + imgName + ".png");
     }
 
-    public Task TriggerMainPage(string connectionID)
+    public Task TriggerMainPage(string connectionIDMainPage,string connectionIDControlPage)
     {
-        return Clients.Client(connectionID).InvokeAsync("Connected", connectionID);
+        return Clients.Client(connectionIDMainPage).InvokeAsync("Connected", connectionIDControlPage);
+    }
+
+    public Task OpenCard(string connectionID,int ID)
+    {
+        return Clients.Client(connectionID).InvokeAsync("OpenCard", ID);
     }
 }

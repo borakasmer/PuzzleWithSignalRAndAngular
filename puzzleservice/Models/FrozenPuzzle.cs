@@ -8,4 +8,5 @@ public class FrozenPuzzle : Ipuzzle
     public int RefCategoryID { get; set; }
     public bool IsShow { get; set; }
     public string ControlCardBgImage { get; set; }
+    public bool IsDone { get; set; }
 }

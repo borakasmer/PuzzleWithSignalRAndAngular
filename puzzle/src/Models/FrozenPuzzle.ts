@@ -40,5 +40,15 @@ class FrozenPuzzle {
     public set controlCardBgImage(v : string) {
         this._controlCardBgImage = v;
     }
+
+    
+    private _isDone : boolean=false;
+    public get isDone() : boolean {
+        return this._isDone;
+    }
+    public set isDone(v : boolean) {
+        this._isDone = v;
+    }
+    
     
 }
