@@ -10,11 +10,11 @@ public class Puzzle : Hub
     public override Task OnConnectedAsync()
     {
 
-       // Boolean IsMain = Context.Connection.GetHttpContext().Request.Headers["Host"].ToString().Contains("localhost");
+        // Boolean IsMain = Context.Connection.GetHttpContext().Request.Headers["Host"].ToString().Contains("localhost");
         string FromPage = this.Context.Connection.GetHttpContext().Request.Query["key"];
         //var result = Context.Connection.GetHttpContext().Request.Headers.Values;
         //if (IsMain)
-        if(FromPage=="main")
+        if (FromPage == "main")
         {
             //Main Page
             Guid imgName = Guid.NewGuid();
@@ -24,8 +24,8 @@ public class Puzzle : Hub
         else
         {
             //Control Page
-            return Clients.Client(Context.ConnectionId).InvokeAsync("GetConnectionId",Context.ConnectionId);
-        }            
+            return Clients.Client(Context.ConnectionId).InvokeAsync("GetConnectionId", Context.ConnectionId);
+        }
     }
 
     public string CreateBarcode(string connectionID, Guid imgName)
@@ -47,13 +47,18 @@ public class Puzzle : Hub
         File.Delete("wwwroot/images/" + imgName + ".png");
     }
 
-    public Task TriggerMainPage(string connectionIDMainPage,string connectionIDControlPage)
+    public Task TriggerMainPage(string connectionIDMainPage, string connectionIDControlPage)
     {
         return Clients.Client(connectionIDMainPage).InvokeAsync("Connected", connectionIDControlPage);
     }
 
-    public Task OpenCard(string connectionID,int ID)
+    public Task OpenCard(string connectionID, int ID)
     {
         return Clients.Client(connectionID).InvokeAsync("OpenCard", ID);
+    }
+
+    public Task NotifyControlPage(string controlConnectionID, int ID, bool result, bool isReset = false)
+    {
+        return Clients.Client(controlConnectionID).InvokeAsync("NotifyControlPage", ID, result, isReset);
     }
 }

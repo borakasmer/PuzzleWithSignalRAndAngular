@@ -11,7 +11,7 @@
       <tr *ngFor="let cards of cardList | pairs">
         <!-- <td *ngFor="let card of cardRow"> -->
         <td *ngFor="let card of cards">          
-          <img  [src]="card.controlCardBgImage" alt="{{card.name}}" [attr.isShow]="card.isShow" name="{{card.name}}" class='cardBack' width="325" height="239">          
+          <img  [src]="card.controlCardBgImage" alt="{{card.name}}" [attr.isShow]="card.isShow" [attr.isDone]="card.isDone" name="{{card.name}}" class='cardBack' width="325" height="239">          
         </td>        
       </tr>
     </table>

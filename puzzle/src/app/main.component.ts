@@ -24,7 +24,7 @@ export class MainComponent implements OnInit {
   width: number = 400;
   IsLogin: boolean = false;
   _connectionId: string;
-  _connectionIDControlPage:string;
+  _connectionIDControlPage: string;
   constructor(private service: PuzzleService) { }
 
   public ngOnInit() {
@@ -45,10 +45,10 @@ export class MainComponent implements OnInit {
     });
 
     this._hubConnection.on('Connected', (connectionIDControlPage: string) => {
-      this._connectionIDControlPage=connectionIDControlPage;
+      this._connectionIDControlPage = connectionIDControlPage;
       console.log("ControlPageConnectionID :" + this._connectionIDControlPage);
       //Get Cards
-      this.service.GetAllCards(this._connectionId).subscribe(result => {
+      this.service.GetAllCards(this._connectionId, false).subscribe(result => {
         //console.log(JSON.stringify(result));
 
         var data = result.forEach(card => {
@@ -77,7 +77,8 @@ export class MainComponent implements OnInit {
         console.log(id + "-Card Open");
 
         //Diğer eşi veya bir başka tamamlanmamış(IsDone==false) açık kart var ise
-        if (this.cardList.filter(c => c.isShow && card.isDone == false).length > 1) {
+        //if (this.cardList.filter(c => c.isShow == true && card.isDone == false).length > 1) { ==>CARD :)
+        if (this.cardList.filter(c => c.isShow == true && c.isDone == false).length > 1) {
           //1-) Diğer Eşi        
           /*           var IsPairCardOpen = this.cardList.filter(card => card.id == this.CloneID(id) && card.isShow).length > 0 ? true : false; */
           /* var IsPairCardOpen = this.cardList.filter(crd => crd.id == this.CloneID(id) && crd.isShow).length > 0 ? true : false; */
@@ -88,15 +89,38 @@ export class MainComponent implements OnInit {
           //.BİLDİRİM İÇİN CONNECTIONID LAZIM.VE NETWORK PAKET ISI VAR. SUNUCUYA YÜK. DİĞER DURUMDA KOD TEKRARI VAR. CLIENT SIDE ÇÖZÜM.
           if (IsPairCardOpen) {
             console.log("Ok");
-             //Açık çift Tamamlanır.
-             this.cardList.filter(cd => cd.isShow && cd.isDone == false).forEach(f => {
-              f.controlCardBgImage = this.cardBgImage;              
+            //Açık çift Tamamlanır.
+            this.cardList.filter(cd => cd.isShow && cd.isDone == false).forEach(f => {
+              //f.controlCardBgImage = this.cardBgImage;
               f.isDone = true;
+            });
+            var isReset: boolean = false;
+            //Hepsi bitti demek. Oyun Tamamlandı
+            if (this.cardList.filter(c => c.isDone == false).length == 0) {
+              isReset = true;
+              //Get Cards
+              this.service.GetAllCards(this._connectionId, true).subscribe(result => {
+                //console.log(JSON.stringify(result));
 
-              //Control Page'e Olumlu bildir.
+                var data = result.forEach(card => {
+                  card.controlCardBgImage = this.cardBgImage;
+                });
 
-              //-----------------------------
-            })
+                this.cardList = result;//this.GroupTable(result,3);
+                console.log(JSON.stringify(this.cardList));
+                this.IsLogin = true;
+                this.bgImage = "/assets/images/frozen/back2.jpg"
+              },
+                err => console.log(err),
+                () => {
+                  console.log("Card List Reset");
+
+                  //Control Page'e Olumlu bildir.
+                  this.NotifyControlPage(id, true, isReset);
+                  //-----------------------------
+                }
+              )
+            }
           }
           else//Eşi değil yanlış kart açılmış
           {
@@ -104,17 +128,16 @@ export class MainComponent implements OnInit {
             //Bekletemek lazım. Açılan resim kayboluyor.
             setTimeout(() =>
               //Açık çift kapatılır.
-              this.cardList.filter(cd => cd.isShow && cd.isDone == false).forEach(f => {
+              this.cardList.filter(cd => cd.isShow == true && cd.isDone == false).forEach(f => {
                 f.controlCardBgImage = this.cardBgImage;
                 f.isShow = false;
                 f.isDone = false;
-
-                 //Control Page'e Olumsuz bildir.
-                  
-                //-----------------------------
               })
               , 2000);
-            //-------------           
+            //-------------     
+            //Control Page'e Olumsuz bildir.
+            this.NotifyControlPage(id, false, isReset);
+            //-----------------------------      
           }
         }
       }
@@ -157,6 +180,12 @@ export class MainComponent implements OnInit {
     this._hubConnection.invoke("DeleteImage", this.barcodeImageName)
       .then(result => {
         console.log("Image Deleted");
+      });
+  }
+  NotifyControlPage(id: number, result: boolean, isReset: boolean = false) {
+    this._hubConnection.invoke("NotifyControlPage", this._connectionIDControlPage, id, result, isReset)
+      .then(result => {
+        console.log("Card Result Notify To Control Page");
       });
   }
 }

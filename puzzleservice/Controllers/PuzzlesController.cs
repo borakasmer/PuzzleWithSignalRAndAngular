@@ -20,11 +20,12 @@ namespace puzzleservice.Controllers
             }
         }
         // GET api/values/5
-        [HttpGet("{id}/{connectionID}")]
-        public List<Ipuzzle> Get(int id, string connectionID)
+        [HttpGet("{id}/{connectionID}/{isReset}")]
+        public List<Ipuzzle> Get(int id, string connectionID, Boolean isReset = false)
         {
             List<Ipuzzle> list = null; // Şişme ihtimali var. Sürekli Cmd+R mesela.
             List<Ipuzzle> cloneList = null;
+            if (isReset) { cache.Clear(); }
             if (!cache.ContainsKey(connectionID))
             {
                 using (PuzzleDataContext dbContext = new PuzzleDataContext())
@@ -59,7 +60,7 @@ namespace puzzleservice.Controllers
                 return int.Parse(ID.ToString().Split('0')[0]);
             }
         }
-        
+
         //Eşlenik resimler yeni referans değerleri ile oluşurlar.
         public static List<T> CloneList<T>(List<T> oldList)
         {
