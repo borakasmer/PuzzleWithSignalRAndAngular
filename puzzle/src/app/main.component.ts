@@ -36,6 +36,7 @@ export class MainComponent implements OnInit {
       .catch(err => console.log('Error while establishing connection :('));
 
     this._hubConnection.on('GetConnectionId', (barcode: string, connectionId: string, imageName: string) => {
+      this.playAudio("1.wav");
       this.barcodeImageUrl = barcode;
       this.barcodeImageName = imageName;
 
@@ -46,7 +47,7 @@ export class MainComponent implements OnInit {
 
     this._hubConnection.on('Connected', (connectionIDControlPage: string) => {
       this._connectionIDControlPage = connectionIDControlPage;
-      console.log("ControlPageConnectionID :" + this._connectionIDControlPage);
+      console.log("ControlPageConnectionID :" + this._connectionIDControlPage);      
       //Get Cards
       this.service.GetAllCards(this._connectionId, false).subscribe(result => {
         //console.log(JSON.stringify(result));
@@ -59,6 +60,9 @@ export class MainComponent implements OnInit {
         console.log(JSON.stringify(this.cardList));
         this.IsLogin = true;
         this.bgImage = "/assets/images/frozen/back2.jpg"
+
+        var soundID=this.getRandomInt(2,9)
+        this.playAudio(soundID+".wav");
       },
         err => console.log(err),
         () => {
@@ -97,6 +101,10 @@ export class MainComponent implements OnInit {
             var isReset: boolean = false;
             //Hepsi bitti demek. Oyun Tamamlandı
             if (this.cardList.filter(c => c.isDone == false).length == 0) {
+              
+              var soundID=this.getRandomInt(2,9)
+              this.playAudio(soundID+".wav");
+
               isReset = true;
               //Get Cards
               this.service.GetAllCards(this._connectionId, true).subscribe(result => {
@@ -121,6 +129,12 @@ export class MainComponent implements OnInit {
                 }
               )
             }
+            else
+            {
+              //Control Page'e Olumlu bildir.
+              this.NotifyControlPage(id, true, isReset);
+              //-----------------------------
+            }
           }
           else//Eşi değil yanlış kart açılmış
           {
@@ -133,7 +147,7 @@ export class MainComponent implements OnInit {
                 f.isShow = false;
                 f.isDone = false;
               })
-              , 2000);
+              , 1000);
             //-------------     
             //Control Page'e Olumsuz bildir.
             this.NotifyControlPage(id, false, isReset);
@@ -153,7 +167,26 @@ export class MainComponent implements OnInit {
       return parseInt(ID.toString().split("0")[0]);
     }
   }
+  audio: any;
+  playAudio(url) {
+    if (this.audio) {
+      this.audio.pause();
+      //this.audio = null;
+    }
+    else
+    {
+      this.audio = new Audio();    
+    }
+    this.audio.src = "/assets/sounds/" + url;
+    this.audio.loop = true;
+    this.audio.volume = 0.2;
+    this.audio.load();
+    this.audio.play();
+  }
 
+  getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
   /*
     public GroupTable(array, count: number) {
       //3'lü kolonlar halinde sıralama

@@ -10,9 +10,10 @@
       <!-- <tr *ngFor="let cardRow of cardList">  -->
       <tr *ngFor="let cards of cardList | pairs">
         <!-- <td *ngFor="let card of cardRow"> -->
-        <td *ngFor="let card of cards">          
-          <img  [src]="card.controlCardBgImage" alt="{{card.name}}" [attr.isShow]="card.isShow" [attr.isDone]="card.isDone" name="{{card.name}}" class='cardBack' width="325" height="239">          
-        </td>        
+        <td *ngFor="let card of cards">
+          <img [src]="card.controlCardBgImage" alt="{{card.name}}" [attr.isShow]="card.isShow" id="{{card.id}}" [attr.isDone]="card.isDone"
+            name="{{card.name}}" class='cardBack' width="325" height="239">
+        </td>
       </tr>
     </table>
   </div>

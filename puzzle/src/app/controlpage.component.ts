@@ -89,25 +89,25 @@ export class ControlPageComponent implements OnInit {
                         f.controlCardBgImage = this.cardBgImage;
                         f.isShow = false;
                         f.isDone = false;
-                    }), 2000)
+                    }), 1000)
             }
         });
     }
     OpenCard(id) {
-        console.log("Card Opening: " + id);
-        /* console.log(this.cardList.filter(card=>card.id==id)); */
-        var card = this.cardList.filter(card => card.id == id)[0];
-        //Üst üste tıklanamasın
-        if (!card.isShow) {
-            card.isShow = true;
-            card.controlCardBgImage = this.cardBgDisabledImage;
+        if (this.cardList.filter(cd => cd.isShow && cd.isDone == false).length < 2) {
+            /* console.log(this.cardList.filter(card=>card.id==id)); */
+            var card = this.cardList.filter(card => card.id == id)[0];
+            //Üst üste tıklanamasın
+            if (!card.isShow) {
+                card.isShow = true;
+                card.controlCardBgImage = this.cardBgDisabledImage;
 
-            this._hubConnection.invoke("OpenCard", this.connectionIDMainPage, id)
-                .then(result => {
-                    console.log("Command MainPage OpenCard");
-                });
+                this._hubConnection.invoke("OpenCard", this.connectionIDMainPage, id)
+                    .then(result => {
+                        console.log("Command MainPage OpenCard");
+                    });
+            }
         }
-
     }
     public GroupTable(array, count: number) {
         //3'lü kolonlar halinde sıralama

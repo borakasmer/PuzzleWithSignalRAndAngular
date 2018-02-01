@@ -25,6 +25,7 @@ namespace puzzleservice.Controllers
         {
             List<Ipuzzle> list = null; // Şişme ihtimali var. Sürekli Cmd+R mesela.
             List<Ipuzzle> cloneList = null;
+            List<Ipuzzle> randomList = null; //Enson gönderilen lİST
             if (isReset) { cache.Clear(); }
             if (!cache.ContainsKey(connectionID))
             {
@@ -39,15 +40,17 @@ namespace puzzleservice.Controllers
 
                     list.AddRange(cloneList);
 
-                    cache.Add(connectionID, list);
+                    randomList = list.OrderBy<Ipuzzle, int>((item) => rnd.Next()).Take(12).ToList<Ipuzzle>();
+
+                    cache.Add(connectionID, randomList);
                 }
             }
             else
             {
-                list = cache[connectionID];
+                randomList = cache[connectionID];
                 cache.Remove(connectionID);
             }
-            return list;
+            return randomList;
         }
         public int CloneID(int ID)
         {
