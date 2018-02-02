@@ -114,33 +114,33 @@ export class MainComponent implements OnInit {
                 this.isWin = false;
                 var soundID = this.getRandomInt(2, 9);
                 this.playAudio(soundID + ".wav");
+
+                isReset = true;
+
+                //Get Cards
+                this.service.GetAllCards(this._connectionId, true).subscribe(result => {
+                  //console.log(JSON.stringify(result));
+
+                  var data = result.forEach(card => {
+                    card.controlCardBgImage = this.cardBgImage;
+                  });
+
+                  this.cardList = result;//this.GroupTable(result,3);
+                  console.log(JSON.stringify(this.cardList));
+                  this.IsLogin = true;
+                  this.bgImage = "/assets/images/frozen/back2.jpg"
+                },
+                  err => console.log(err),
+                  () => {
+                    console.log("Card List Reset");
+
+                    //Control Page'e Olumlu bildir.
+                    this.NotifyControlPage(id, true, isReset);
+                    //-----------------------------
+                  }
+                )
               }
                 , 6000);
-              isReset = true;
-
-
-              //Get Cards
-              this.service.GetAllCards(this._connectionId, true).subscribe(result => {
-                //console.log(JSON.stringify(result));
-
-                var data = result.forEach(card => {
-                  card.controlCardBgImage = this.cardBgImage;
-                });
-
-                this.cardList = result;//this.GroupTable(result,3);
-                console.log(JSON.stringify(this.cardList));
-                this.IsLogin = true;
-                this.bgImage = "/assets/images/frozen/back2.jpg"
-              },
-                err => console.log(err),
-                () => {
-                  console.log("Card List Reset");
-
-                  //Control Page'e Olumlu bildir.
-                  this.NotifyControlPage(id, true, isReset);
-                  //-----------------------------
-                }
-              )
             }
             else {
               //Control Page'e Olumlu bildir.
