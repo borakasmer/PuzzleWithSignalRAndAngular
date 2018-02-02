@@ -7,9 +7,9 @@ using SixLabors.ImageSharp;
 
 public class Puzzle : Hub
 {
+    string servicePath = "http://192.168.1.234";
     public override Task OnConnectedAsync()
     {
-
         // Boolean IsMain = Context.Connection.GetHttpContext().Request.Headers["Host"].ToString().Contains("localhost");
         string FromPage = this.Context.Connection.GetHttpContext().Request.Query["key"];
         //var result = Context.Connection.GetHttpContext().Request.Headers.Values;
@@ -30,7 +30,7 @@ public class Puzzle : Hub
 
     public string CreateBarcode(string connectionID, Guid imgName)
     {
-        string Code = "http://192.168.1.234:4200/ControlPage/" + connectionID;
+        string Code = servicePath + ":4200/ControlPage/" + connectionID;
         string width = "200";
         string height = "200";
         var url = string.Format($"http://chart.apis.google.com/chart?cht=qr&chs={width}x{height}&chl={Code}");
@@ -40,7 +40,7 @@ public class Puzzle : Hub
         var image = Image.Load(stream);
 
         image.Save("wwwroot/images/" + imgName + ".png");
-        return "http://192.168.1.234:5000/images/" + imgName + ".png";
+        return servicePath + ":5000/images/" + imgName + ".png";
     }
     public void DeleteImage(string imgName)
     {

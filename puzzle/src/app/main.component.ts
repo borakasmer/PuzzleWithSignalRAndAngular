@@ -16,11 +16,12 @@ export class MainComponent implements OnInit {
   cardList: Array<FrozenPuzzle>;
 
   bgPath = "/assets/images/frozen/";
+  servicePath = "http://localhost:5000/";
   isWin = false;
   winImage = this.bgPath + "win2.jpg";
 
-  bgImage: string = "/assets/images/frozen/back.jpg"
-  cardBgImage: string = "/assets/images/frozen/cardBack.jpg";
+  bgImage: string = this.bgPath + "back.jpg"
+  cardBgImage: string = this.bgPath + "cardBack.jpg";
   barcodeImageName: string
   barcodeImageUrl: string;
   height: number = 400;
@@ -31,7 +32,7 @@ export class MainComponent implements OnInit {
   constructor(private service: PuzzleService) { }
 
   public ngOnInit() {
-    this._hubConnection = new HubConnection("http://localhost:5000/puzzle?key=main");
+    this._hubConnection = new HubConnection(this.servicePath + "puzzle?key=main");
 
     this._hubConnection
       .start()
@@ -62,7 +63,7 @@ export class MainComponent implements OnInit {
         this.cardList = result;//this.GroupTable(result,3);
         console.log(JSON.stringify(this.cardList));
         this.IsLogin = true;
-        this.bgImage = "/assets/images/frozen/back2.jpg"
+        this.bgImage = this.bgPath + "back2.jpg"
 
         var soundID = this.getRandomInt(2, 9)
         this.playAudio(soundID + ".wav");
@@ -100,6 +101,7 @@ export class MainComponent implements OnInit {
             this.cardList.filter(cd => cd.isShow && cd.isDone == false).forEach(f => {
               //f.controlCardBgImage = this.cardBgImage;
               f.isDone = true;
+              this.playSucess("success.wav");
             });
             var isReset: boolean = false;
             //Hepsi bitti demek. Oyun Tamamlandı
@@ -128,7 +130,7 @@ export class MainComponent implements OnInit {
                   this.cardList = result;//this.GroupTable(result,3);
                   console.log(JSON.stringify(this.cardList));
                   this.IsLogin = true;
-                  this.bgImage = "/assets/images/frozen/back2.jpg"
+                  this.bgImage = this.bgPath + "back2.jpg"
                 },
                   err => console.log(err),
                   () => {
@@ -193,6 +195,20 @@ export class MainComponent implements OnInit {
     this.audio.volume = 0.2;
     this.audio.load();
     this.audio.play();
+  }
+  audioSucess: any;
+  playSucess(url) {
+    if (this.audioSucess) {
+      this.audioSucess.pause();
+      //this.audio = null;
+    }
+    else {
+      this.audioSucess = new Audio();
+    }
+    this.audioSucess.src = "/assets/sounds/" + url;
+    this.audioSucess.volume = 0.2;
+    this.audioSucess.load();
+    this.audioSucess.play();
   }
 
   getRandomInt(min, max) {

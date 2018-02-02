@@ -17,9 +17,11 @@ export class ControlPageComponent implements OnInit {
     private _hubConnection: HubConnection;
 
     cardList: Array<FrozenPuzzle>
-    bgImage: string = "/assets/images/frozen/controlback.jpg"
-    cardBgImage: string = "/assets/images/frozen/controlCardback.png?ver=1.09";
-    cardBgDisabledImage: string = "/assets/images/frozen/controlDisabledCardback.png";
+    bgPath = "/assets/images/frozen/";
+    servicePath = "http://192.168.1.234:5000/";
+    bgImage: string = this.bgPath + "controlback.jpg"
+    cardBgImage: string = this.bgPath + "controlCardback.png?ver=1.09";
+    cardBgDisabledImage: string = this.bgPath + "controlDisabledCardback.png";
 
     constructor(private route: ActivatedRoute, private service: PuzzleService) { }
 
@@ -29,7 +31,7 @@ export class ControlPageComponent implements OnInit {
             console.log("MainPageConnectionID:" + this.connectionIDMainPage);
         });
 
-        this._hubConnection = new HubConnection("http://192.168.1.234:5000/puzzle?key=control");
+        this._hubConnection = new HubConnection(this.servicePath + "puzzle?key=control");
 
         this._hubConnection
             .start()
