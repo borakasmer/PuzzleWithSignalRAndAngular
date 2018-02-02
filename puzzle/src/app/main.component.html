@@ -5,7 +5,7 @@
       <img src="{{barcodeImageUrl}}" width="{{width}}" height=" {{height}}" alt='QrBarcode' class='barcode' (load)="DeleteImage()">
     </p>
   </div>
-  <div *ngIf="IsLogin">
+  <div *ngIf="IsLogin && isWin==false">
     <table class="box">
       <!-- <tr *ngFor="let cardRow of cardList">  -->
       <tr *ngFor="let cards of cardList | pairs">
@@ -15,6 +15,7 @@
             name="{{card.name}}" class='cardBack' width="325" height="239">
         </td>
       </tr>
-    </table>
+    </table>   
   </div>
+  <img [src]="winImage" *ngIf="isWin" class="win">
 </div>

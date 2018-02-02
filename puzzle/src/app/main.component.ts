@@ -16,6 +16,9 @@ export class MainComponent implements OnInit {
   cardList: Array<FrozenPuzzle>;
 
   bgPath = "/assets/images/frozen/";
+  isWin = false;
+  winImage = this.bgPath + "win2.jpg";
+
   bgImage: string = "/assets/images/frozen/back.jpg"
   cardBgImage: string = "/assets/images/frozen/cardBack.jpg";
   barcodeImageName: string
@@ -47,7 +50,7 @@ export class MainComponent implements OnInit {
 
     this._hubConnection.on('Connected', (connectionIDControlPage: string) => {
       this._connectionIDControlPage = connectionIDControlPage;
-      console.log("ControlPageConnectionID :" + this._connectionIDControlPage);      
+      console.log("ControlPageConnectionID :" + this._connectionIDControlPage);
       //Get Cards
       this.service.GetAllCards(this._connectionId, false).subscribe(result => {
         //console.log(JSON.stringify(result));
@@ -61,8 +64,8 @@ export class MainComponent implements OnInit {
         this.IsLogin = true;
         this.bgImage = "/assets/images/frozen/back2.jpg"
 
-        var soundID=this.getRandomInt(2,9)
-        this.playAudio(soundID+".wav");
+        var soundID = this.getRandomInt(2, 9)
+        this.playAudio(soundID + ".wav");
       },
         err => console.log(err),
         () => {
@@ -101,11 +104,21 @@ export class MainComponent implements OnInit {
             var isReset: boolean = false;
             //Hepsi bitti demek. Oyun Tamamlandı
             if (this.cardList.filter(c => c.isDone == false).length == 0) {
-              
-              var soundID=this.getRandomInt(2,9)
-              this.playAudio(soundID+".wav");
 
+              var soundID = this.getRandomInt(2, 9)
+              this.playAudio("win.wav");
+
+              this.isWin = true;
+
+              setTimeout(() => {
+                this.isWin = false;
+                var soundID = this.getRandomInt(2, 9);
+                this.playAudio(soundID + ".wav");
+              }
+                , 6000);
               isReset = true;
+
+
               //Get Cards
               this.service.GetAllCards(this._connectionId, true).subscribe(result => {
                 //console.log(JSON.stringify(result));
@@ -129,8 +142,7 @@ export class MainComponent implements OnInit {
                 }
               )
             }
-            else
-            {
+            else {
               //Control Page'e Olumlu bildir.
               this.NotifyControlPage(id, true, isReset);
               //-----------------------------
@@ -173,9 +185,8 @@ export class MainComponent implements OnInit {
       this.audio.pause();
       //this.audio = null;
     }
-    else
-    {
-      this.audio = new Audio();    
+    else {
+      this.audio = new Audio();
     }
     this.audio.src = "/assets/sounds/" + url;
     this.audio.loop = true;
