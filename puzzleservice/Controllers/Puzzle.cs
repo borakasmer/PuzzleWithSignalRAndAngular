@@ -18,8 +18,7 @@ public class Puzzle : Hub
         {
             //Main Page
             Guid imgName = Guid.NewGuid();
-            var barcode = CreateBarcode(Context.ConnectionId, imgName);
-            return Clients.Client(Context.ConnectionId).InvokeAsync("GetConnectionId", barcode, Context.ConnectionId, imgName);
+            return Clients.Client(Context.ConnectionId).InvokeAsync("GetConnectionId", Context.ConnectionId, imgName);
         }
         else
         {
@@ -28,9 +27,11 @@ public class Puzzle : Hub
         }
     }
 
-    public string CreateBarcode(string connectionID, Guid imgName)
+    //Barcode alınması OnConnectedAsync() kaldırıldı. Çünkü seçilen categoryID alınamıyordu.
+    //Bu method MainPage tarafında GetConnectionId() methodu  tarafından çağrılır.
+    public string CreateBarcode(string connectionID, Guid imgName, int categoryID)
     {
-        string Code = servicePath + ":4200/ControlPage/" + connectionID;
+        string Code = servicePath + ":4200/ControlPage/" + connectionID + "/" + categoryID;
         string width = "200";
         string height = "200";
         var url = string.Format($"http://chart.apis.google.com/chart?cht=qr&chs={width}x{height}&chl={Code}");

@@ -5,6 +5,11 @@ import 'rxjs/add/operator/switchMap';
 import { PuzzleService } from '../Services/Indexservice';
 import { isRegExp } from 'util';
 
+enum Category {
+    frozen = 1,
+    moana = 2
+}
+
 @Component({
     selector: 'control_page',
     templateUrl: 'controlpage.component.html',
@@ -12,12 +17,15 @@ import { isRegExp } from 'util';
 })
 
 export class ControlPageComponent implements OnInit {
+    root: string = "frozen";
+    categoryID: number = 1;
     connectionIDMainPage: string;
     _connectionId: string;
     private _hubConnection: HubConnection;
 
     cardList: Array<FrozenPuzzle>
-    bgPath = "/assets/images/frozen/";
+    /* bgPath = "/assets/images/frozen/"; */
+    bgPath = "/assets/images/" + this.root + "/";
     servicePath = "http://192.168.1.234:5000/";
     bgImage: string = this.bgPath + "controlback.jpg"
     cardBgImage: string = this.bgPath + "controlCardback.png?ver=1.09";
@@ -28,6 +36,8 @@ export class ControlPageComponent implements OnInit {
     ngOnInit() {
         this.route.params.subscribe((params: Params) => {
             this.connectionIDMainPage = params['connectionID']; //MainPageConnectionID
+            this.categoryID = params['categoryID'];
+            this.SetCategoryParameters(Category[this.categoryID]);
             console.log("MainPageConnectionID:" + this.connectionIDMainPage);
         });
 
@@ -39,7 +49,7 @@ export class ControlPageComponent implements OnInit {
                 console.log("Hub_Connection Start!");
                 //Eğer önce kartları çekmez isek Dictionary Liste'e Lock koymak lazım. Aynı key 2 kere yazılmaya çalışılıyor.
                 //Get Cards 
-                this.service.GetAllCards(this.connectionIDMainPage).subscribe(result => {
+                this.service.GetAllCards(this.connectionIDMainPage, this.categoryID).subscribe(result => {
                     var data = result.forEach(card => {
                         card.controlCardBgImage = this.cardBgImage;
                     });
@@ -66,7 +76,7 @@ export class ControlPageComponent implements OnInit {
         this._hubConnection.on('NotifyControlPage', (id: number, result: boolean, isReset: boolean = false) => {
             if (isReset) {
                 //Get Cards 
-                this.service.GetAllCards(this.connectionIDMainPage).subscribe(result => {
+                this.service.GetAllCards(this.connectionIDMainPage, this.categoryID).subscribe(result => {
                     var data = result.forEach(card => {
                         card.controlCardBgImage = this.cardBgImage;
                     });
@@ -93,7 +103,26 @@ export class ControlPageComponent implements OnInit {
                         f.isDone = false;
                     }), 1000)
             }
-        });
+        });    
+    }
+    //ilerde Categorylere göre farklılaştırma yapılabilir.
+    SetCategoryParameters(category: string) {
+        switch (category) {
+            case "moana": {
+                this.bgPath = "/assets/images/" + category + "/";
+                this.bgImage = this.bgPath + "controlback.jpg"
+                this.cardBgImage = this.bgPath + "controlCardback.png?ver=1.09";
+                this.cardBgDisabledImage = this.bgPath + "controlDisabledCardback.png";
+                break;
+            }
+            case "frozen": {
+                this.bgPath = "/assets/images/" + category + "/";
+                this.bgImage = this.bgPath + "controlback.jpg"
+                this.cardBgImage = this.bgPath + "controlCardback.png?ver=1.09";
+                this.cardBgDisabledImage = this.bgPath + "controlDisabledCardback.png";
+                break;
+            }
+        }
     }
     OpenCard(id) {
         if (this.cardList.filter(cd => cd.isShow && cd.isDone == false).length < 2) {

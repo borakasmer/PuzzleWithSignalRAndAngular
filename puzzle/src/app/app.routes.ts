@@ -7,7 +7,7 @@ import { MainComponent } from './main.component';
 // Route Configuration
 export const routes: Routes = [
   { path: '', component: MainComponent },
-  { path: 'ControlPage/:connectionID', component: ControlPageComponent },
+  { path: 'ControlPage/:connectionID/:categoryID', component: ControlPageComponent },
   {
     path: '',
     redirectTo: '',

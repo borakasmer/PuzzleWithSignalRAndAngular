@@ -1,9 +1,11 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div class="body" backImage="{{ bgImage }}">
   <div *ngIf="!IsLogin">
-    <p style="position: absolute;top:30%;left:25%; width: 200px; height: 200px; margin-left: -65px; margin-top: -50px">
-      <img src="{{barcodeImageUrl}}" width="{{width}}" height=" {{height}}" alt='QrBarcode' class='barcode' (load)="DeleteImage()">
-    </p>
+      <button id="moana" (click)="changeRoot('moana')"></button>
+      <button id="frozen" (click)="changeRoot('frozen')"></button>
+        <p style="position: absolute;top:30%;left:30%; width: 200px; height: 200px; margin-left: -65px; margin-top: -50px">
+          <img src="{{barcodeImageUrl}}" width="{{width}}" height=" {{height}}" alt='QrBarcode' class='barcode' (load)="DeleteImage()">
+        </p>
   </div>
   <div *ngIf="IsLogin && isWin==false">
     <table class="box">
@@ -11,11 +13,11 @@
       <tr *ngFor="let cards of cardList | pairs">
         <!-- <td *ngFor="let card of cardRow"> -->
         <td *ngFor="let card of cards">
-          <img [src]="card.controlCardBgImage" alt="{{card.name}}" [attr.isShow]="card.isShow" id="{{card.id}}" [attr.isDone]="card.isDone"
-            name="{{card.name}}" class='cardBack' width="325" height="239">
+          <img [src]="card.controlCardBgImage" alt="{{card.name}}-{{categoryID}}" [attr.isShow]="card.isShow" id="{{card.id}}-{{categoryID}}" [attr.isDone]="card.isDone"
+            name="{{card.name}}-{{categoryID}}" class='cardBack' width="325" height="239">
         </td>
       </tr>
-    </table>   
+    </table>
   </div>
   <img [src]="winImage" *ngIf="isWin" class="win">
 </div>

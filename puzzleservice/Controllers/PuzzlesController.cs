@@ -52,6 +52,7 @@ namespace puzzleservice.Controllers
             }
             return randomList;
         }
+        //Asla FrozenPuzzle table'da Resimlerde ID içerisinde '0' karakteri bulunduran bir değer olması. Örnek ID==10 olan kayıt silindi. Tekrar insert edilerek 19 yapıldı..
         public int CloneID(int ID)
         {
             if (ID < 100)

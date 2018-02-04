@@ -1,8 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HubConnection } from '@aspnet/signalr-client';
 import { Console } from '@angular/core/src/console';
 import { PuzzleService } from '../Services/Indexservice';
+
+enum Category {
+  frozen = 1,
+  moana = 2
+}
 
 @Component({
   selector: 'main_page',
@@ -11,11 +16,19 @@ import { PuzzleService } from '../Services/Indexservice';
 })
 
 export class MainComponent implements OnInit {
+
+  root: string = "frozen";
+  categoryID: number = 1;
+  soundRoot: string = "";
+  soundExtension: string = ".wav";
+  soundMax: number = 9;
+
   private _hubConnection: HubConnection;
 
   cardList: Array<FrozenPuzzle>;
 
-  bgPath = "/assets/images/frozen/";
+  /* bgPath = "/assets/images/frozen/"; */
+  bgPath = "/assets/images/" + this.root + "/";
   servicePath = "http://localhost:5000/";
   isWin = false;
   winImage = this.bgPath + "win2.jpg";
@@ -29,7 +42,7 @@ export class MainComponent implements OnInit {
   IsLogin: boolean = false;
   _connectionId: string;
   _connectionIDControlPage: string;
-  constructor(private service: PuzzleService) { }
+  constructor(private service: PuzzleService,private cdRef: ChangeDetectorRef) { }
 
   public ngOnInit() {
     this._hubConnection = new HubConnection(this.servicePath + "puzzle?key=main");
@@ -39,21 +52,29 @@ export class MainComponent implements OnInit {
       .then(() => console.log("Hub_Connection Start!"))
       .catch(err => console.log('Error while establishing connection :('));
 
-    this._hubConnection.on('GetConnectionId', (barcode: string, connectionId: string, imageName: string) => {
-      this.playAudio("1.wav");
-      this.barcodeImageUrl = barcode;
-      this.barcodeImageName = imageName;
+    this._hubConnection.on('GetConnectionId', (connectionId: string, imageName: string) => {
 
+      this.playAudio("1");
       this._connectionId = connectionId;
-      console.log("Barcode Image :" + barcode);
-      console.log("ConnectionID :" + connectionId);
+
+      this._hubConnection.invoke("CreateBarcode", this._connectionId, imageName, this.categoryID)
+        .then(result => {
+          var barcode: string = result;
+          this.barcodeImageUrl = barcode;
+          this.barcodeImageName = imageName;
+
+          console.log("Barcode Image :" + barcode);
+          console.log("ConnectionID :" + connectionId);
+        });
     });
 
+    //Farkında olmadan Mobile sayfa refresh olunca ana sayfanın'da refresh olması sağlandı. Amaç ControlConnectionID'nin alınması idi :)
     this._hubConnection.on('Connected', (connectionIDControlPage: string) => {
       this._connectionIDControlPage = connectionIDControlPage;
       console.log("ControlPageConnectionID :" + this._connectionIDControlPage);
-      //Get Cards
-      this.service.GetAllCards(this._connectionId, false).subscribe(result => {
+
+      //Get Cards    
+      this.service.GetAllCards(this._connectionId, this.categoryID, false).subscribe(result => {
         //console.log(JSON.stringify(result));
 
         var data = result.forEach(card => {
@@ -65,8 +86,8 @@ export class MainComponent implements OnInit {
         this.IsLogin = true;
         this.bgImage = this.bgPath + "back2.jpg"
 
-        var soundID = this.getRandomInt(2, 9)
-        this.playAudio(soundID + ".wav");
+        var soundID = this.getRandomInt(2, this.soundMax)
+        this.playAudio(soundID);
       },
         err => console.log(err),
         () => {
@@ -82,6 +103,7 @@ export class MainComponent implements OnInit {
       if (!card.isShow) {
         card.isShow = true;
         card.controlCardBgImage = this.bgPath + card.name;
+        this.cdRef.detectChanges(); //Force The Image Change To Angular And Disabled Chrome Cache...
         console.log(id + "-Card Open");
 
         //Diğer eşi veya bir başka tamamlanmamış(IsDone==false) açık kart var ise
@@ -106,21 +128,19 @@ export class MainComponent implements OnInit {
             var isReset: boolean = false;
             //Hepsi bitti demek. Oyun Tamamlandı
             if (this.cardList.filter(c => c.isDone == false).length == 0) {
-
-              var soundID = this.getRandomInt(2, 9)
-              this.playAudio("win.wav");
+              this.playSucess("win.wav");
 
               this.isWin = true;
 
               setTimeout(() => {
                 this.isWin = false;
-                var soundID = this.getRandomInt(2, 9);
-                this.playAudio(soundID + ".wav");
+                var soundID = this.getRandomInt(2, this.soundMax);
+                this.playAudio(soundID);
 
                 isReset = true;
 
                 //Get Cards
-                this.service.GetAllCards(this._connectionId, true).subscribe(result => {
+                this.service.GetAllCards(this._connectionId, this.categoryID, true).subscribe(result => {
                   //console.log(JSON.stringify(result));
 
                   var data = result.forEach(card => {
@@ -170,9 +190,9 @@ export class MainComponent implements OnInit {
         }
       }
     });
-
   }
 
+  //Asla FrozenPuzzle table'da ID'sine '0' geçen bir kayıt bulundurma :) ID==10 olan kayıt silindi. Tekrar insert edilerek 19 yapıldı..
   public CloneID(ID: number): number {
     if (ID < 100) {
       return parseInt(ID + "0" + ID);
@@ -181,8 +201,9 @@ export class MainComponent implements OnInit {
       return parseInt(ID.toString().split("0")[0]);
     }
   }
+  /*For Play Music On Safari => Safari / Settings / Setting For This Website / Allow All Auto Play*/
   audio: any;
-  playAudio(url) {
+  playAudio(url: string) {
     if (this.audio) {
       this.audio.pause();
       //this.audio = null;
@@ -190,12 +211,13 @@ export class MainComponent implements OnInit {
     else {
       this.audio = new Audio();
     }
-    this.audio.src = "/assets/sounds/" + url;
+    this.audio.src = "/assets/sounds/" + this.soundRoot + url + this.soundExtension;
     this.audio.loop = true;
-    this.audio.volume = 0.2;
+    Category[this.categoryID] == "frozen" ? this.audio.volume = 0.2 : this.audio.volume = 0.8;
     this.audio.load();
     this.audio.play();
   }
+  /*For Play Music On Safari => Safari / Settings / Setting For This Website / Allow All Auto Play*/
   audioSucess: any;
   playSucess(url) {
     if (this.audioSucess) {
@@ -247,5 +269,39 @@ export class MainComponent implements OnInit {
       .then(result => {
         console.log("Card Result Notify To Control Page");
       });
+  }
+
+  public changeRoot(root: string) {
+    this.cardList = new Array<FrozenPuzzle>();
+    switch (root) {
+      case "moana": {
+        this.root = "moana";
+        this.bgPath = "/assets/images/" + this.root + "/";
+        this.bgImage = this.bgPath + "back.jpg"
+        this.cardBgImage = this.bgPath + "cardBack.jpg";
+        this.winImage = this.bgPath + "win2.jpg";
+
+        this.soundRoot = "moana";
+        this.soundExtension = ".mp3";
+        this.categoryID = 2;
+        this.soundMax = 6;
+        this.ngOnInit();
+        break;
+      }
+      case "frozen": {
+        this.root = "frozen";
+        this.bgPath = "/assets/images/" + this.root + "/";
+        this.bgImage = this.bgPath + "back.jpg"
+        this.cardBgImage = this.bgPath + "cardBack.jpg";
+        this.winImage = this.bgPath + "win2.jpg";
+
+        this.soundRoot = "";
+        this.soundExtension = ".wav";
+        this.categoryID = 1;
+        this.soundMax = 9;
+        this.ngOnInit();
+        break;
+      }
+    }
   }
 }

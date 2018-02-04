@@ -27,3 +27,52 @@
     top:50%;
     left:50%;
 }
+
+button {
+    position: absolute;
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    vertical-align: top;
+    width: 254px;
+    height: 204px;
+    border-radius: 30%;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    outline:none;
+    /* border: none; For Google */
+    border: none; /* For Safari*/  /*For Play Music On Safari => Safari / Settings / Setting For This Website / Allow All Auto Play*/
+    background-color:white; /* Set Default Color For Safari. Don't need at Chrome*/ 
+}
+button:hover {
+    background-color: rgb(135, 210, 245);
+    color: white;
+}
+
+/* button:active{
+    background:olive;
+}
+
+button:focus {
+    background-color: rgb(135, 210, 245);
+    color: white;
+} */
+
+#moana{
+    background-image: url( '/assets/images/moana.png' );
+    background-size: 224px 201px;
+    width: 220px;
+    height: 191px;
+    top:241px;
+    left:192px;
+}
+
+#frozen{
+    background-image: url( '/assets/images/frozen.png' );
+    background-size: 250px 201px;
+    width: 211px;
+    height: 200px;
+    top:491px;
+    left:196px;
+}
