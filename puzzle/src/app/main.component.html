@@ -8,6 +8,7 @@
         </p>
   </div>
   <div *ngIf="IsLogin && isWin==false">
+    <textarea cols="1" rows="2" [(ngModel)]="moveCount" id="txt_area" disabled></textarea>
     <table class="box">
       <!-- <tr *ngFor="let cardRow of cardList">  -->
       <tr *ngFor="let cards of cardList | pairs">

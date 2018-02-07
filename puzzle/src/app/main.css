@@ -66,6 +66,8 @@ button:focus {
     height: 191px;
     top:241px;
     left:192px;
+    /* left:192px; Laptop*/
+    /*left:160px; Laptop and Share Iphone*/ 
 }
 
 #frozen{
@@ -75,4 +77,25 @@ button:focus {
     height: 200px;
     top:491px;
     left:196px;
+    /* left:130px; Laptop*/
+    /*left:160px; Laptop and Share Iphone*/ 
+}
+
+#txt_area{ 
+    background-image:url(/assets/images/cloud3.png);
+    background-color:transparent; 
+    background-repeat:no-repeat;
+    color:white; 
+    width:170px; 
+    height:100px; 
+    padding-left:20px; 
+    padding-right:10px; 
+    border:0px; 
+    padding-top:7px; 
+    padding-bottom:10px; 
+    font-size:90px; 
+    font: bold;
+    text-align: center;
+    overflow:hidden;
+    resize: none;
 }

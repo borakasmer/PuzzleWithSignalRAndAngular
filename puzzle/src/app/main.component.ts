@@ -22,6 +22,7 @@ export class MainComponent implements OnInit {
   soundRoot: string = "";
   soundExtension: string = ".wav";
   soundMax: number = 9;
+  moveCount=0;
 
   private _hubConnection: HubConnection;
 
@@ -88,6 +89,8 @@ export class MainComponent implements OnInit {
 
         var soundID = this.getRandomInt(2, this.soundMax)
         this.playAudio(soundID);
+
+        this.moveCount=0;
       },
         err => console.log(err),
         () => {
@@ -101,6 +104,7 @@ export class MainComponent implements OnInit {
       var card = this.cardList.filter(card => card.id == id)[0];
       //Üst üste tıklanamasın
       if (!card.isShow) {
+        this.moveCount+=1;
         card.isShow = true;
         card.controlCardBgImage = this.bgPath + card.name;
         this.cdRef.detectChanges(); //Force The Image Change To Angular And Disabled Chrome Cache...
@@ -155,7 +159,7 @@ export class MainComponent implements OnInit {
                   err => console.log(err),
                   () => {
                     console.log("Card List Reset");
-
+                    this.moveCount=0;
                     //Control Page'e Olumlu bildir.
                     this.NotifyControlPage(id, true, isReset);
                     //-----------------------------
