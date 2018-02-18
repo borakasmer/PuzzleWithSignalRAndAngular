@@ -1,22 +1,11 @@
 
-/* .box {
-    width:1000px;
-    height:750px;
-    position:fixed;
-    margin-left:-500px; 
-    margin-top:-375px;  
-    top:40%;
-    left:50%;
-} */
-
 .box {
-    width:975px;
-    height:950px;
-    position:fixed;
-    margin-left:-488px; /* half of width */
-    margin-top:-500px;  /* half of height */
-    top:50%;
-    left:50%;
+    position: absolute;
+    top: 2%;
+    left: 24%;
+    height: 95%;
+    /*width: 55%;*/  /* 4K Monitor - Phone(Not Full Screen)  Safari */ 
+    width: 60%; /* Screen - Phone (Not Full Screen) Safari */
 }
 .win {
     width:1200px;
@@ -45,6 +34,7 @@ button {
     border: none; /* For Safari*/  /*For Play Music On Safari => Safari / Settings / Setting For This Website / Allow All Auto Play*/
     background-color:white; /* Set Default Color For Safari. Don't need at Chrome*/ 
 }
+
 button:hover {
     background-color: rgb(135, 210, 245);
     color: white;
@@ -59,26 +49,55 @@ button:focus {
     color: white;
 } */
 
-#moana{
-    background-image: url( '/assets/images/moana.png' );
-    background-size: 224px 201px;
-    width: 220px;
-    height: 191px;
-    top:241px;
-    left:192px;
-    /* left:192px; Laptop*/
-    /*left:160px; Laptop and Share Iphone*/ 
+.buttonmenu {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    vertical-align: top;
+    width: 254px;
+    height: 204px;
+    border-radius: 30%;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    outline:none;
+    /* border: none; For Google */
+    border: none; /* For Safari*/  /*For Play Music On Safari => Safari / Settings / Setting For This Website / Allow All Auto Play*/
+    background-color:white; /* Set Default Color For Safari. Don't need at Chrome*/ 
 }
 
+.buttonmenu:hover {
+    background-color: rgb(135, 210, 245);
+    color: white;
+}
+
+#moana{
+    position: relative;
+    margin-left: 13%;
+    margin-top: 13%;
+    width: 15%;
+    height: 15%;
+}
+
+
 #frozen{
-    background-image: url( '/assets/images/frozen.png' );
-    background-size: 250px 201px;
-    width: 211px;
-    height: 200px;
-    top:491px;
-    left:196px;
-    /* left:130px; Laptop*/
-    /*left:160px; Laptop and Share Iphone*/ 
+    position: relative;
+    margin-top: 26%;
+    width: 15%;
+    height: 15%;
+    margin-left: -15%;
+}
+
+.barcode{
+    width:22%;
+    height: 22%;
+    margin-top: 15%;
+    margin-left: 2%;
+}
+
+.cardback{
+    height: 100%;
+    width: 100%;
 }
 
 #txt_area{ 
@@ -86,8 +105,7 @@ button:focus {
     background-color:transparent; 
     background-repeat:no-repeat;
     color:white; 
-    width:170px; 
-    height:100px; 
+    width:200px;
     padding-left:20px; 
     padding-right:10px; 
     border:0px; 

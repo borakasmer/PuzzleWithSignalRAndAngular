@@ -1,24 +1,24 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div class="body" backImage="{{ bgImage }}">
   <div *ngIf="!IsLogin">
-      <button id="moana" (click)="changeRoot('moana')"></button>
-      <button id="frozen" (click)="changeRoot('frozen')"></button>
-        <p style="position: absolute;top:30%;left:30%; width: 200px; height: 200px; margin-left: -65px; margin-top: -50px">
-          <img src="{{barcodeImageUrl}}" width="{{width}}" height=" {{height}}" alt='QrBarcode' class='barcode' (load)="DeleteImage()">
-        </p>
+  <!--   <div *ngFor="let category of categoryList">
+      <img id="{{category.name}}" class="buttonmenu" (click)="changeRoot(category.name)" src="/assets/images/{{category.menuImage}}"/>
+    </div> -->
+    <img id="moana" class="buttonmenu" (click)="changeRoot('moana')" src="/assets/images/moana.png" />
+    <img id="frozen" class="buttonmenu" (click)="changeRoot('frozen')" src="/assets/images/frozen.png" />
+    <img src="{{barcodeImageUrl}}" alt='QrBarcode' class='barcode' (load)="DeleteImage()">
   </div>
   <div *ngIf="IsLogin && isWin==false">
     <textarea cols="1" rows="2" [(ngModel)]="moveCount" id="txt_area" disabled></textarea>
-    <table class="box">
-      <!-- <tr *ngFor="let cardRow of cardList">  -->
-      <tr *ngFor="let cards of cardList | pairs">
-        <!-- <td *ngFor="let card of cardRow"> -->
-        <td *ngFor="let card of cards">
-          <img [src]="card.controlCardBgImage" alt="{{card.name}}-{{categoryID}}" [attr.isShow]="card.isShow" id="{{card.id}}-{{categoryID}}" [attr.isDone]="card.isDone"
-            name="{{card.name}}-{{categoryID}}" class='cardBack' width="325" height="239">
-        </td>
-      </tr>
-    </table>
+    <div class="box">
+      <div class="row" *ngFor="let cards of cardList | pairs">
+        <div style="margin-bottom: 5px;" class="col-md-4 col-sm-4 col-xs-4" *ngFor="let card of cards">
+          <img [src]="card.controlCardBgImage" alt="{{card.name}}-{{categoryID}}" [attr.isShow]="card.isShow" id="{{card.id}}-{{categoryID}}"
+            [attr.isDone]="card.isDone" name="{{card.name}}-{{categoryID}}" class="img-responsive cardback" />
+        </div>
+      </div>
+    </div>
+
   </div>
   <img [src]="winImage" *ngIf="isWin" class="win">
 </div>

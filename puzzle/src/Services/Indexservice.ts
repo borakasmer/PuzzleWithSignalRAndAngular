@@ -8,6 +8,12 @@ import 'rxjs/add/operator/catch';
 export class PuzzleService {
     servicePath = "http://192.168.1.234:5000/";
     constructor(private http: Http) { }
+
+    public GetCategories() {
+        return this.http.get(this.servicePath + "api/Puzzles")
+            .map(result => result.json());
+    }
+    
     public GetAllCards(connectionID: string, categoryID: number, isReset: boolean = false) {
         /* return this.http.get("http://localhost:5000/api/Puzzles/1") */
         return this.http.get(this.servicePath + "api/Puzzles/" + categoryID + "/" + connectionID + "/" + isReset)

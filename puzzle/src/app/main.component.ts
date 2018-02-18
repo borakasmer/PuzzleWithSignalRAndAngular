@@ -12,7 +12,7 @@ enum Category {
 @Component({
   selector: 'main_page',
   templateUrl: 'main.component.html',
-  styleUrls: ['./main.css']
+  styleUrls: ['./main.css?ver=1.2']
 })
 
 export class MainComponent implements OnInit {
@@ -27,6 +27,7 @@ export class MainComponent implements OnInit {
   private _hubConnection: HubConnection;
 
   cardList: Array<FrozenPuzzle>;
+  categoryList: Array<PuzzleCategory>;
 
   /* bgPath = "/assets/images/frozen/"; */
   bgPath = "/assets/images/" + this.root + "/";
@@ -68,6 +69,17 @@ export class MainComponent implements OnInit {
           console.log("ConnectionID :" + connectionId);
         });
     });
+
+    //Get All Categories    
+    this.service.GetCategories().subscribe(result => {    
+      //console.log("categoryList :" + JSON.stringify(result));
+      this.categoryList = result;
+    },
+      err => console.log(err),
+      () => {
+        console.log("Category List Loaded");
+      }
+    )
 
     //Farkında olmadan Mobile sayfa refresh olunca ana sayfanın'da refresh olması sağlandı. Amaç ControlConnectionID'nin alınması idi :)
     this._hubConnection.on('Connected', (connectionIDControlPage: string) => {
