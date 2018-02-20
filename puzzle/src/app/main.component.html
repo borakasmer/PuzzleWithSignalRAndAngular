@@ -1,11 +1,13 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div class="body" backImage="{{ bgImage }}">
   <div *ngIf="!IsLogin">
-  <!--   <div *ngFor="let category of categoryList">
+    <!--   <div *ngFor="let category of categoryList">
       <img id="{{category.name}}" class="buttonmenu" (click)="changeRoot(category.name)" src="/assets/images/{{category.menuImage}}"/>
     </div> -->
-    <img id="moana" class="buttonmenu" (click)="changeRoot('moana')" src="/assets/images/moana.png" />
-    <img id="frozen" class="buttonmenu" (click)="changeRoot('frozen')" src="/assets/images/frozen.png" />
+    <!-- <img id="moana" class="buttonmenu" (click)="changeRoot('moana')" src="/assets/images/moana.png" />
+    <img id="frozen" class="buttonmenu" (click)="changeRoot('frozen')" src="/assets/images/frozen.png" /> -->
+    <img *ngFor="let category of categoryList" id="{{category.name}}" class="buttonmenu" (click)="changeRoot(category.name)"
+      src="/assets/images/{{category.menuImage}}" />
     <img src="{{barcodeImageUrl}}" alt='QrBarcode' class='barcode' (load)="DeleteImage()">
   </div>
   <div *ngIf="IsLogin && isWin==false">

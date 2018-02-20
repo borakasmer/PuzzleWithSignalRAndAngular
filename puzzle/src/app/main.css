@@ -4,8 +4,8 @@
     top: 2%;
     left: 24%;
     height: 95%;
-    /*width: 55%;*/  /* 4K Monitor - Phone(Not Full Screen)  Safari */ 
-    width: 60%; /* Screen - Phone (Not Full Screen) Safari */
+    width: 55%;  /* 4K Monitor - Phone(Not Full Screen)  Safari */ 
+    /*width: 60%;*/ /* Screen - Phone (Not Full Screen) Safari */
 }
 .win {
     width:1200px;
@@ -71,7 +71,7 @@ button:focus {
     color: white;
 }
 
-#moana{
+/* #moana{
     position: relative;
     margin-left: 13%;
     margin-top: 13%;
@@ -93,6 +93,30 @@ button:focus {
     height: 22%;
     margin-top: 15%;
     margin-left: 2%;
+} */
+
+#moana{
+    position: relative;
+    margin-left: -15%; /*yeni*/
+    margin-top: 13%;
+    width: 15%;
+    height: 15%;
+}
+
+
+#frozen{
+    position: relative;
+    margin-top: 26%;
+    width: 15%;
+    height: 15%;
+    margin-left: 15%;/*yeni*/
+}
+
+.barcode{
+    width:22%;
+    height: 22%;
+    margin-top: 15%;
+    margin-left: 0%;/*yeni*/
 }
 
 .cardback{
