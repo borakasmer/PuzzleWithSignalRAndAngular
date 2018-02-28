@@ -16,7 +16,7 @@ namespace puzzleservice.Controllers
         {
             using (PuzzleDataContext dbContext = new PuzzleDataContext())
             {
-                return dbContext.PuzzleCategories.ToList();
+                return dbContext.PuzzleCategory.ToList();
             }
         }
         // GET api/values/5
@@ -53,6 +53,7 @@ namespace puzzleservice.Controllers
             return randomList;
         }
         //Asla FrozenPuzzle table'da Resimlerde ID içerisinde '0' karakteri bulunduran bir değer olması. Örnek ID==10 olan kayıt silindi. Tekrar insert edilerek 19 yapıldı..
+        [HttpGet("{id}")]
         public int CloneID(int ID)
         {
             if (ID < 100)

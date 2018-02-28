@@ -9,6 +9,39 @@
     left:51%;
 } 
 
+.main {
+    border: 1px solid black;
+    box-shadow: 10px 10px 5px #888;
+    border-radius: 12px;
+    padding: 20px;
+    background-color: #ddd;
+    margin: 25px;
+    width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.logo {
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    padding: 15px;
+}
+
+.container {
+    position:fixed;
+    -webkit-perspective: 300;
+    perspective: 300;
+    top : 22%;
+    left : 12%;
+}
+
+.body{
+    position:fixed;   
+    top : 3%;  
+    left:25%; 
+}
 /* .box {
     width:300px;
     height:540px;

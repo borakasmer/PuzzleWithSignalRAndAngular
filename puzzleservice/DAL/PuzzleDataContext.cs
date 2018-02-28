@@ -4,7 +4,7 @@ public class PuzzleDataContext : DbContext
   {
     public DbSet<FrozenPuzzle> FrozenPuzzle { get; set; }
 
-    public DbSet<PuzzleCategory> PuzzleCategories { get; set; }
+    public DbSet<PuzzleCategory> PuzzleCategory { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

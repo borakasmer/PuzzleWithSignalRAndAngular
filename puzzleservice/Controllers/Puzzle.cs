@@ -62,4 +62,14 @@ public class Puzzle : Hub
     {
         return Clients.Client(controlConnectionID).InvokeAsync("NotifyControlPage", ID, result, isReset);
     }
+
+    public Task MovePlane(string command, string connectionID)
+    {
+        return Clients.Client(connectionID).InvokeAsync("MovePlane", command);
+    }
+
+    public Task Fire(string connectionID)
+    {
+        return Clients.Client(connectionID).InvokeAsync("Fire");
+    }
 }

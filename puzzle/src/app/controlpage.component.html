@@ -1,11 +1,32 @@
-<div class="body" backImage="{{ bgImage }}">
+<div backImage="{{ bgImage }}">
     <table class="box" *ngIf="cardList!=null">
-        <!-- <tr *ngFor="let cardRow of cardList"> -->            
+        <!-- <tr *ngFor="let cardRow of cardList"> -->
         <tr *ngFor="let cards of cardList | pairs">
             <!-- <td *ngFor="let card of cardRow"> -->
             <td *ngFor="let card of cards">
-                <img [src]="card.controlCardBgImage" alt="{{card.name}}" [attr.isShow]="card.isShow" [attr.isDone]="card.isDone" name="{{card.name}}" id="{{card.id}}" class='cardBack' (click)="OpenCard(card.id)" width="98px" height="135px">
-            </td>           
+                <img [src]="card.controlCardBgImage" alt="{{card.name}}" [attr.isShow]="card.isShow" [attr.isDone]="card.isDone" name="{{card.name}}"
+                    id="{{card.id}}" class='cardBack' (click)="OpenCard(card.id)" width="98px" height="135px">
+            </td>
         </tr>
     </table>
+
+    <div class="body">
+        <table *ngIf="isPlane">
+            <tr>
+                <td [ngStyle]="{'color': 'blue', 'font-size': '16px', 'font-weight': 'bold', 'padding-right':'15px'}">Hareket Sol/Sağ [gamma]</td>
+                <td id="doTiltLR" [ngStyle]="{'font-size': '24px', 'font-weight': 'bold'}">{{_tiltLR}}</td>
+            </tr>
+            <tr>
+                <td [ngStyle]="{'color': 'blue', 'font-size': '16px', 'font-weight': 'bold', 'padding-right':'15px'}">Hareket Ön/Arka [beta]</td>
+                <td id="doTiltFB" [ngStyle]="{'font-size': '24px', 'font-weight': 'bold'}">{{_tiltFB}}</td>
+            </tr>
+            <tr>
+                <td [ngStyle]="{'color': 'blue', 'font-size': '16px', 'font-weight': 'bold', 'padding-right':'15px'}">Direction [alpha]</td>
+                <td id="doDirection" [ngStyle]="{'font-size': '24px', 'font-weight': 'bold'}">{{_direction}}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="container" style="-webkit-perspective: 300; perspective: 300;" *ngIf="isPlane" (click)="Fire()">
+        <img src="{{this.bgPath}}/plane_control.png" id="imgLogo" class="logo">
+    </div>
 </div>

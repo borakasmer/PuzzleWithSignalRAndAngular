@@ -8,9 +8,10 @@
     <img id="frozen" class="buttonmenu" (click)="changeRoot('frozen')" src="/assets/images/frozen.png" /> -->
     <img *ngFor="let category of categoryList" id="{{category.name}}" class="buttonmenu" (click)="changeRoot(category.name)"
       src="/assets/images/{{category.menuImage}}" />
+    <img id="plane" class="buttonmenu" (click)="changeRoot('plane')" src="/assets/images/plane.gif" />
     <img src="{{barcodeImageUrl}}" alt='QrBarcode' class='barcode' (load)="DeleteImage()">
   </div>
-  <div *ngIf="IsLogin && isWin==false">
+  <div *ngIf="IsLogin && isWin==false && categoryID!=3">
     <textarea cols="1" rows="2" [(ngModel)]="moveCount" id="txt_area" disabled></textarea>
     <div class="box">
       <div class="row" *ngFor="let cards of cardList | pairs">
@@ -23,4 +24,10 @@
 
   </div>
   <img [src]="winImage" *ngIf="isWin" class="win">
+  <div class="divPlane" id="divPlane">
+    <img src="{{bgPath}}/plane.png" width="250px" style="position: absolute" *ngIf="showPlane" id="fightPlane" />
+  </div>
+  <div class="divTank" id="divTank">
+   
+  </div>
 </div>

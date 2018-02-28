@@ -13031,11 +13031,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/borakasmer/Projects/Puzzle_Responsive/puzzleservice/puzzleservice.csproj",
+      "projectUniqueName": "/Users/borakasmer/Projects/Puzzle_Responsive_Plane/puzzleservice/puzzleservice.csproj",
       "projectName": "puzzleservice",
-      "projectPath": "/Users/borakasmer/Projects/Puzzle_Responsive/puzzleservice/puzzleservice.csproj",
+      "projectPath": "/Users/borakasmer/Projects/Puzzle_Responsive_Plane/puzzleservice/puzzleservice.csproj",
       "packagesPath": "/Users/borakasmer/.nuget/packages/",
-      "outputPath": "/Users/borakasmer/Projects/Puzzle_Responsive/puzzleservice/obj/",
+      "outputPath": "/Users/borakasmer/Projects/Puzzle_Responsive_Plane/puzzleservice/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
