@@ -53,7 +53,7 @@ namespace puzzleservice.Controllers
             return randomList;
         }
         //Asla FrozenPuzzle table'da Resimlerde ID içerisinde '0' karakteri bulunduran bir değer olması. Örnek ID==10 olan kayıt silindi. Tekrar insert edilerek 19 yapıldı..
-        [HttpGet("{id}")]
+        /* [HttpGet("{id}")]
         public int CloneID(int ID)
         {
             if (ID < 100)
@@ -64,8 +64,20 @@ namespace puzzleservice.Controllers
             {
                 return int.Parse(ID.ToString().Split('0')[0]);
             }
+        } */
+        [HttpGet("{id}")]
+        public int CloneID(int ID)
+        {
+            if (ID < 100)
+            {
+                return int.Parse(ID.ToString() + "0" + ID.ToString() + "0");
+            }
+            else
+            {
+                var firstID = ID.ToString().Substring(0, ID.ToString().Length / 2);
+                return int.Parse(firstID.Substring(0, firstID.Length - 1));
+            }
         }
-
         //Eşlenik resimler yeni referans değerleri ile oluşurlar.
         public static List<T> CloneList<T>(List<T> oldList)
         {

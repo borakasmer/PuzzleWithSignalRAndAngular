@@ -30,7 +30,7 @@ enum Command {
 export class MainComponent implements OnInit {
 
   root: string = "frozen";
-  categoryID: number = 1;
+  categoryID: number = Category.frozen;
   soundRoot: string = "";
   soundExtension: string = ".wav";
   soundMax: number = 9;
@@ -361,12 +361,21 @@ export class MainComponent implements OnInit {
   }
 
   //Asla FrozenPuzzle table'da ID'sine '0' geçen bir kayıt bulundurma :) ID==10 olan kayıt silindi. Tekrar insert edilerek 19 yapıldı..
-  public CloneID(ID: number): number {
+  /* public CloneID(ID: number): number {
     if (ID < 100) {
       return parseInt(ID + "0" + ID);
     }
     else {
       return parseInt(ID.toString().split("0")[0]);
+    }
+  } */
+  public CloneID(ID: number): number {
+    if (ID < 100) {
+      return parseInt(ID + "0" + ID + "0");
+    }
+    else {
+      var firstID = ID.toString().substring(0, ID.toString().length / 2);
+      return parseInt(firstID.substring(0, firstID.length - 1));
     }
   }
   /*For Play Music On Safari => Safari / Settings / Setting For This Website / Allow All Auto Play*/
@@ -451,7 +460,7 @@ export class MainComponent implements OnInit {
 
         this.soundRoot = "moana";
         this.soundExtension = ".mp3";
-        this.categoryID = 2;
+        this.categoryID = Category.moana;
         this.soundMax = 6;
         this.ngOnInit();
         break;
@@ -465,7 +474,7 @@ export class MainComponent implements OnInit {
 
         this.soundRoot = "";
         this.soundExtension = ".wav";
-        this.categoryID = 1;
+        this.categoryID = Category.frozen;
         this.soundMax = 9;
         this.ngOnInit();
         break;
@@ -476,7 +485,7 @@ export class MainComponent implements OnInit {
         this.bgImage = this.bgPath + "back.jpg"
         this.soundRoot = "plane";
         this.soundExtension = ".mp3";
-        this.categoryID = 3;
+        this.categoryID = Category.plain;
         this.soundMax = 1;
         this.ngOnInit();
         break;
@@ -575,7 +584,7 @@ export class MainComponent implements OnInit {
               },
               complete: function () {
                 $("#bullet_" + timestampBullet).remove();
-                ths.isHit=false; // lock'ı kaldırdık.
+                ths.isHit = false; // lock'ı kaldırdık.
               }
             }
           );
