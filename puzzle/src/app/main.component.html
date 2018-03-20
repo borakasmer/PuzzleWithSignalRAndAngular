@@ -27,7 +27,14 @@
   <div class="divPlane" id="divPlane">
     <img src="{{bgPath}}/plane.png" width="250px" style="position: absolute" *ngIf="showPlane" id="fightPlane" />
   </div>
-  <div class="divTank" id="divTank">
-   
+
+  <textarea cols="1" rows="1" [(ngModel)]="planeScore" id="txt_plane" *ngIf="showPlane"></textarea>
+  <div style="position: absolute;left:170px;top:3px">
+    <img *ngFor="let item of planeLife" src="{{bgPath}}/fight.png" id="planeLife" />
+  </div>
+  
+  <div class="divTank" id="divTank"></div>
+  <div class="gameOver" id="gameOver" *ngIf="showGameOver">
+    <img src="{{bgPath}}/gameover.gif" id="gameOverImage" />
   </div>
 </div>

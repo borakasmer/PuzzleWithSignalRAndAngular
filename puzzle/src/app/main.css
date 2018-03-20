@@ -119,6 +119,20 @@ button:focus {
     margin-left: -15%;
 }
 
+#planeLife{
+    width:40px;
+    border:0px; 
+    padding-top:7px; 
+    padding-left:5px; 
+    padding-bottom:10px; 
+    font-size:90px; 
+    font: bold;
+    text-align: center;
+    overflow:hidden;
+    resize: none;
+    top: 0px;
+}
+
 .barcode{
     width:22%;
     height: 22%;
@@ -147,4 +161,38 @@ button:focus {
     text-align: center;
     overflow:hidden;
     resize: none;
+}
+
+#txt_plane{         
+    background-color:black; 
+    background-repeat:no-repeat;
+    color:red; 
+    width:150px;
+    height:70px;
+    padding-left:20px; 
+    padding-right:10px; 
+    border:1px; 
+    padding-top:0px; 
+    padding-bottom:10px; 
+    font-size:50px; 
+    font: bold;
+    text-align: center;
+    overflow:hidden;
+    resize: none;
+    margin-top:10px;
+    margin-left:10px;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+}
+
+#gameOver{
+    display: inline-block;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 500px;
+    height: 281px;
+    margin: auto;
+    background-color: #f3f3f3;
 }

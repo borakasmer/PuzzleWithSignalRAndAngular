@@ -1,9 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, ElementRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { HubConnection } from '@aspnet/signalr-client';
-import { Console } from '@angular/core/src/console';
 import { PuzzleService } from '../Services/Indexservice';
-import { stringify } from '@angular/compiler/src/util';
 
 declare var jquery: any;
 declare var $: any;
@@ -11,7 +8,7 @@ declare var $: any;
 enum Category {
   frozen = 1,
   moana = 2,
-  plain=3
+  plain = 3
 }
 enum Command {
   right = 1,
@@ -36,7 +33,11 @@ export class MainComponent implements OnInit {
   soundMax: number = 9;
   moveCount = 0;
 
+  planeScore = 0;
   showPlane: boolean = false;
+  showGameOver: boolean = false;
+  planeLife;
+
   windowHeight: number = $(document).height();
   windowWidth: number = $(document).width()
   private _hubConnection: HubConnection;
@@ -46,7 +47,7 @@ export class MainComponent implements OnInit {
 
   /* bgPath = "/assets/images/frozen/"; */
   bgPath = "/assets/images/" + this.root + "/";
-  servicePath = "http://localhost:5000/";
+  servicePath = "http://192.168.1.234:5000/";
   isWin = false;
   winImage = this.bgPath + "win2.jpg";
 
@@ -129,6 +130,8 @@ export class MainComponent implements OnInit {
         )
       }
       else {
+        this.planeScore = 0;
+        this.planeLife = new Array(3);
         this.IsLogin = true;
         this.bgImage = this.bgPath + "back2.jpg"
         this.showPlane = true;
@@ -331,6 +334,7 @@ export class MainComponent implements OnInit {
                 /* if (pos.top * -1 >= $(this).position().top * -1 && pos.top * -1 <= $(this).position().top * -1 + $(this).height && pos.left * -1 >= $(this).position().left * -1 && pos.left * -1 <= $(this).position().left * -1 + $(this).width) { */
                 $(this).stop();
                 $(this).attr('src', ths.bgPath + "/explosion.png");
+                ths.planeScore += 1;
                 //Ateşlenmedi ise Bombasını yok et display=='none' ise 
                 var bullet = $("#bullet_" + $(this).attr("id"))
                 if (bullet.css('display') == 'none') {
@@ -530,8 +534,9 @@ export class MainComponent implements OnInit {
       if (waitBullet < 6000) {//Tank Duvarı geçmiş ise hiç ateş etmesin. Duvara kadar en fazla 6sn sürüyor.
         setTimeout(() => {
           $("#bullet_" + timestampBullet).css('display', 'inline')
-          var _left = $("#bullet_" + timestampBullet).position().left;
-
+          if ($("#bullet_" + timestampBullet).position() != undefined) {
+            var _left = $("#bullet_" + timestampBullet).position().left;
+          }
           $("#bullet_" + timestampBullet).clearQueue();
           $("#bullet_" + timestampBullet).stop();
 
@@ -562,6 +567,10 @@ export class MainComponent implements OnInit {
                 //Bombo uçağı vurursa
                 if (pos.top <= $('#fightPlane').position().top + $('#fightPlane').height() && pos.top >= $('#fightPlane').position().top &&
                   pos.left >= $('#fightPlane').position().left && pos.left <= ($('#fightPlane').position().left + $('#fightPlane').width()) && ths.isHit == false) {
+                
+                  $("#bullet_" + timestampBullet).clearQueue();
+                  $("#bullet_" + timestampBullet).stop();
+
                   ths.isHit = true;  // animate sırasında aynı yere tekrardan girmesin diye. (Lock) object.
                   $('#fightPlane').stop(); // Hareketli ise dursun               
                   $('#fightPlane').attr('src', ths.bgPath + "/explosion.png");
@@ -577,6 +586,26 @@ export class MainComponent implements OnInit {
                     ths.playAudio(soundID);
                     $('#fightPlane').css('left', 0);
                     $('#fightPlane').css('top', 0);
+
+                    ths.planeLife.splice(0, 1);
+                    if (ths.planeLife.length == 0) {
+                      ths.showGameOver = true;
+                      //console.log("Start :"+ths.isHit);
+                      setTimeout(() => {
+                        //console.log("Game Over : "+ths.isHit );
+                        var result = confirm("GAME OVER CUNTINUE ? "+ths.isHit);
+                        if (result) {
+                          ths.showGameOver = false;
+                        }
+                        else {
+                          window.location.href = "http://localhost:4200"
+                        }
+                      }, 1000)
+                      //console.log("Game Over Start : "+ths.isHit);
+                      ths.planeLife = new Array(3);
+                      ths.planeScore = 0;
+                    }
+
                     return;
                     //-----------------------                
                   }, 1000)
@@ -585,6 +614,7 @@ export class MainComponent implements OnInit {
               complete: function () {
                 $("#bullet_" + timestampBullet).remove();
                 ths.isHit = false; // lock'ı kaldırdık.
+                //console.log("Not Finish! "+ths.isHit);
               }
             }
           );

@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { HubConnection } from '@aspnet/signalr-client';
-import 'rxjs/add/operator/switchMap';
 import { PuzzleService } from '../Services/Indexservice';
-import { isRegExp } from 'util';
+
 
 enum Category {
     frozen = 1,
@@ -165,6 +164,8 @@ export class ControlPageComponent implements OnInit {
             }
         }
     }
+
+    //| pairs filter kullanıldığı için artık bu method kullanılmamaktadır.
     public GroupTable(array, count: number) {
         //3'lü kolonlar halinde sıralama
         var Pair3list = [];
