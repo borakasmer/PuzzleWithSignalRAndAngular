@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef, ElementRef } from '@angular/core';
-import { HubConnection } from '@aspnet/signalr-client';
+import { HubConnection } from '@aspnet/signalr';
 import { PuzzleService } from '../Services/Indexservice';
 
 declare var jquery: any;

@@ -39,14 +39,17 @@ namespace puzzleservice
                   {
                       builder.AllowAnyHeader();
                       builder.AllowAnyMethod();
-                      builder.AllowAnyOrigin();                      
-                  });
+                      builder.AllowAnyOrigin();   
+                      builder.AllowCredentials();                   
+                  });            
 
-            app.UseMvc();
             app.UseSignalR(routes =>
-          {
-              routes.MapHub<Puzzle>("puzzle");
-          });
+            {
+              routes.MapHub<Puzzle>("/puzzle");
+            });
+            
+            app.UseMvc();
+
             app.UseStaticFiles();
         }
     }

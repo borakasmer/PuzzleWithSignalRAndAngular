@@ -3,7 +3,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
-using SixLabors.ImageSharp;
+//using SixLabors.ImageSharp;
 
 public class Puzzle : Hub
 {
@@ -11,19 +11,19 @@ public class Puzzle : Hub
     public override Task OnConnectedAsync()
     {
         // Boolean IsMain = Context.Connection.GetHttpContext().Request.Headers["Host"].ToString().Contains("localhost");
-        string FromPage = this.Context.Connection.GetHttpContext().Request.Query["key"];
+        string FromPage = this.Context.GetHttpContext().Request.Query["key"];
         //var result = Context.Connection.GetHttpContext().Request.Headers.Values;
         //if (IsMain)
         if (FromPage == "main")
         {
             //Main Page
             Guid imgName = Guid.NewGuid();
-            return Clients.Client(Context.ConnectionId).InvokeAsync("GetConnectionId", Context.ConnectionId, imgName);
+            return Clients.Client(Context.ConnectionId).SendAsync("GetConnectionId", Context.ConnectionId, imgName);
         }
         else
         {
             //Control Page
-            return Clients.Client(Context.ConnectionId).InvokeAsync("GetConnectionId", Context.ConnectionId);
+            return Clients.Client(Context.ConnectionId).SendAsync("GetConnectionId", Context.ConnectionId);
         }
     }
 
@@ -37,10 +37,20 @@ public class Puzzle : Hub
         var url = string.Format($"http://chart.apis.google.com/chart?cht=qr&chs={width}x{height}&chl={Code}");
         WebRequest request = WebRequest.Create(url);
         WebResponse response = request.GetResponse();
-        Stream stream = response.GetResponseStream();
-        var image = Image.Load(stream);
+        Stream stream = response.GetResponseStream();  
 
-        image.Save("wwwroot/images/" + imgName + ".png");
+        using(FileStream fileStream = new FileStream("wwwroot/images/" + imgName + ".png", FileMode.Create))
+        {
+            byte[] bytesInStream = new byte[10000];
+            stream.Read(bytesInStream, 0, bytesInStream.Length);
+            stream.Close();
+            fileStream.Write(bytesInStream, 0, bytesInStream.Length);
+            fileStream.Flush();
+            fileStream.Close();
+        }
+        //var image = Image.Load(stream);
+
+        //image.Save("wwwroot/images/" + imgName + ".png");
         return servicePath + ":5000/images/" + imgName + ".png";
     }
     public void DeleteImage(string imgName)
@@ -50,26 +60,26 @@ public class Puzzle : Hub
 
     public Task TriggerMainPage(string connectionIDMainPage, string connectionIDControlPage)
     {
-        return Clients.Client(connectionIDMainPage).InvokeAsync("Connected", connectionIDControlPage);
+        return Clients.Client(connectionIDMainPage).SendAsync("Connected", connectionIDControlPage);
     }
 
     public Task OpenCard(string connectionID, int ID)
     {
-        return Clients.Client(connectionID).InvokeAsync("OpenCard", ID);
+        return Clients.Client(connectionID).SendAsync("OpenCard", ID);
     }
 
     public Task NotifyControlPage(string controlConnectionID, int ID, bool result, bool isReset = false)
     {
-        return Clients.Client(controlConnectionID).InvokeAsync("NotifyControlPage", ID, result, isReset);
+        return Clients.Client(controlConnectionID).SendAsync("NotifyControlPage", ID, result, isReset);
     }
 
     public Task MovePlane(string command, string connectionID)
     {
-        return Clients.Client(connectionID).InvokeAsync("MovePlane", command);
+        return Clients.Client(connectionID).SendAsync("MovePlane", command);
     }
 
     public Task Fire(string connectionID)
     {
-        return Clients.Client(connectionID).InvokeAsync("Fire");
+        return Clients.Client(connectionID).SendAsync("Fire");
     }
 }
